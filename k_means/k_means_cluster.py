@@ -43,11 +43,24 @@ data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r")
 ### there's an outlier--remove it! 
 data_dict.pop("TOTAL", 0)
 
+import math
+maximum = 0 
+minimum = 100000
+for key, value in data_dict.items():
+    if value['exercised_stock_options'] > maximum and not math.isnan(float(value['exercised_stock_options'])):
+        maximum = value['exercised_stock_options']
+
+    if value['exercised_stock_options'] < minimum and not math.isnan(float(value['exercised_stock_options'])):
+        minimum = value['exercised_stock_options']
+
+#print(maximum)
+#print(minimum)
 
 ### the input features we want to use 
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -60,12 +73,44 @@ poi, finance_features = targetFeatureSplit( data )
 ### (as it's currently written, the line below assumes 2 features)
 for f1, f2 in finance_features:
     plt.scatter( f1, f2 )
-plt.show()
+#plt.show()
+
+from sklearn.preprocessing import MinMaxScaler
+salary = []
+ex_stok = []
+for users in data_dict:
+    val = data_dict[users]["salary"]
+    if val == 'NaN':
+        continue
+    salary.append(float(val))
+    val = data_dict[users]["exercised_stock_options"]
+    if val == 'NaN':
+        continue
+    ex_stok.append(float(val))
+
+salary = [min(salary),200000.0,max(salary)]
+ex_stok = [min(ex_stok),1000000.0,max(ex_stok)]
+
+salary = numpy.array([[e] for e in salary])
+ex_stok = numpy.array([[e] for e in ex_stok])
+
+#scaler_salary = MinMaxScaler(copy=True, feature_range=(0, 1))
+#scaler_stok = MinMaxScaler(copy=True, feature_range=(0, 1))
+
+rescaled_salary = (float(salary[1]) - salary[0]) / (float(salary[2]) - float(salary[0]))
+rescaled_stock = (float(ex_stok[1]) - ex_stok[0]) / (float(ex_stok[2]) - float(ex_stok[0]))
+
+
+print rescaled_salary
+print rescaled_stock
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
-
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=2, random_state=0).fit(finance_features)
+pred = kmeans.predict(finance_features)
+#print(float(pred))
 
 
 ### rename the "name" parameter when you change the number of features

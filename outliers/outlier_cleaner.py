@@ -12,9 +12,17 @@ def outlierCleaner(predictions, ages, net_worths):
     """
     
     cleaned_data = []
-
+    i = 0
     ### your code goes here
-
+    while i < len(predictions):
+        
+        newTuple = (ages[i], net_worths[i], net_worths[i]-predictions[i])
+       # print(newTuple)
+        if(predictions[i]-net_worths[i] < 30):
+            cleaned_data.append(newTuple)
+        #print(i)
+        i += 1
     
+    print(len(cleaned_data))
     return cleaned_data
 
