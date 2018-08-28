@@ -70,12 +70,12 @@ n_components = 150
 
 print ("Extracting the top %d eigenfaces from %d faces" % (n_components, X_train.shape[0]))
 t0 = time()
-pca = RandomizedPCA(n_components=10, whiten=True).fit(X_train)
+pca = RandomizedPCA(n_components=15, whiten=True).fit(X_train)
 print ("done in %0.3fs" % (time() - t0))
 print("Variance:" )
 print(pca.explained_variance_ratio_ )
 
-eigenfaces = pca.components_.reshape((10, h, w))
+eigenfaces = pca.components_.reshape((15, h, w))
 
 print ("Projecting the input data on the eigenfaces orthonormal basis")
 t0 = time()
