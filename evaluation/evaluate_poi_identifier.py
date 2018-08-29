@@ -35,18 +35,20 @@ clf = clf.fit(X_train, y_train)
 predicted = clf.predict(X_test)
 #print(clf.n_outputs_)
 ### your code goes here
-# for index, value in enumerate(y_test):
+predictions = [0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1] 
+true_labels = [0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0]
+# for index, value in enumerate(true_labels):
 #     if value == 1.0:
 #         print (index)
 
 # print("break")
 
-# for index, value in enumerate(predicted):
+# for index, value in enumerate(predictions):
 #     if value == 1.0:
 #         print(index)
 
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 
-recall_score = recall_score(y_test, predicted, average='macro')
-print(recall_score)
+average_precision = recall_score(true_labels, predictions)
+print(average_precision)
