@@ -30,9 +30,10 @@ from sklearn.model_selection import train_test_split
 from sklearn import tree
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.3, random_state=42)
 
+#print(y_test)
 clf = tree.DecisionTreeClassifier()
 clf = clf.fit(X_train, y_train)
-print(clf.score(X_test,y_test))
+print(clf.predict(X_test))
 
 
 ### it's all yours from here forward!  
